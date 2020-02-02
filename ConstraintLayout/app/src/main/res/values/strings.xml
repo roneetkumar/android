@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Application - 1</string>
+    <string name="lasalle_college">Lasalle College</string>
+    <string name="name">Name :</string>
+    <string name="finish">Finish</string>
+    <string name="show">Show</string>
+    <string name="nameString">My Name is</string>
+
+</resources>
