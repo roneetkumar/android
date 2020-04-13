@@ -1,14 +1,17 @@
 package com.example.reveiw;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.example.reveiw.model.Car;
@@ -25,12 +28,12 @@ import java.util.ArrayList;
 
 
 
-public class Second extends AppCompatActivity implements ValueEventListener, AdapterView.OnItemClickListener {
+public class Second extends AppCompatActivity implements ValueEventListener, AdapterView.OnItemClickListener, View.OnClickListener {
 
     // Write a message to the database
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference("Cars");
-
+    ImageButton btnOpenClose;
     DrawerLayout drawerLayout;
     ListView listView;
     ArrayList<Car> list = new ArrayList<>();
@@ -48,6 +51,15 @@ public class Second extends AppCompatActivity implements ValueEventListener, Ada
         drawerLayout = findViewById(R.id.drawer);
 
         myRef.addValueEventListener(this);
+
+        //2. Do a layout inflation : Convert xml file to a view object
+        //We have a layout and convert it to view - inflation
+        LayoutInflater li = LayoutInflater.from(this);
+        View customToolbar = li.inflate(R.layout.custom_toolbar, null);
+
+        //Set Image button
+        btnOpenClose = customToolbar.findViewById(R.id.btnOpenClose);
+        btnOpenClose.setOnClickListener(this);
 
     }
 
@@ -69,7 +81,30 @@ public class Second extends AppCompatActivity implements ValueEventListener, Ada
 
         ArrayAdapter<Car> countryAdapter = new ArrayAdapter<Car>(this,android.R.layout.simple_list_item_1, list);
         listView.setAdapter(countryAdapter);
+
+
+
         listView.setOnItemClickListener(this);
+
+
+        //Set the custom toolbar
+        //1. To get the actual toolbar (we have to replace this predefined toolbar with our own)
+        ActionBar mActionBar = getSupportActionBar();
+        mActionBar.setDisplayShowTitleEnabled(false); //hide the title
+
+        //2. Do a layout inflation : Convert xml file to a view object
+        //We have a layout and convert it to view - inflation
+        LayoutInflater li = LayoutInflater.from(this);
+        View customToolbar = li.inflate(R.layout.custom_toolbar, null);
+
+        //3. Attach the custom toolbar to our app
+        mActionBar.setCustomView(customToolbar);
+        mActionBar.setDisplayShowCustomEnabled(true);
+
+        //Set Image button
+        btnOpenClose = customToolbar.findViewById(R.id.btnOpenClose);
+        btnOpenClose.setOnClickListener(this);
+
     }
 
     @Override
@@ -103,8 +138,27 @@ public class Second extends AppCompatActivity implements ValueEventListener, Ada
         setTitle(list.get(position).getModel());
 
         //5. Close the drawer layout
+
         drawerLayout.closeDrawer(listView);
 
+
+
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (drawerLayout.isDrawerOpen(listView)){
+            drawerLayout.closeDrawer(listView);
+        }
+        else
+        {
+            drawerLayout.openDrawer(listView);
+        }
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
 
     }
 }

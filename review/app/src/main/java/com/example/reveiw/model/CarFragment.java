@@ -39,8 +39,9 @@ public class CarFragment extends android.app.Fragment {
         model.setText(car.getModel());
         price.setText(car.getPrice().toString());
         year.setText(car.getYear().toString());
-        
-                //Log.d(TAG, "onActivityCreated: " + id.getText());
+
+        Log.d(TAG, "onActivityCreated: " + id.getText());
     }
+
 
 }
