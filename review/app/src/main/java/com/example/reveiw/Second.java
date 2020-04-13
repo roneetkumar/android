@@ -28,16 +28,12 @@ import java.util.ArrayList;
 
 
 
-public class Second extends AppCompatActivity implements ValueEventListener, AdapterView.OnItemClickListener, View.OnClickListener {
+public class Second extends AppCompatActivity implements AdapterView.OnItemClickListener, View.OnClickListener {
 
-    // Write a message to the database
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = database.getReference("Cars");
     ImageButton btnOpenClose;
     DrawerLayout drawerLayout;
     ListView listView;
-    ArrayList<Car> list = new ArrayList<>();
-    String data;
+    ArrayList<Car> modelList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,47 +41,13 @@ public class Second extends AppCompatActivity implements ValueEventListener, Ada
         setContentView(R.layout.activity_second);
 
         Bundle bundle=getIntent().getExtras();
-        data = bundle.get("data").toString();
+
+        String  brand = bundle.get("brand").toString();
+
+        ArrayList<Car> list =  (ArrayList<Car>) bundle.getSerializable("list");
 
         listView = findViewById(R.id.listView);
         drawerLayout = findViewById(R.id.drawer);
-
-        myRef.addValueEventListener(this);
-
-        //2. Do a layout inflation : Convert xml file to a view object
-        //We have a layout and convert it to view - inflation
-        LayoutInflater li = LayoutInflater.from(this);
-        View customToolbar = li.inflate(R.layout.custom_toolbar, null);
-
-        //Set Image button
-        btnOpenClose = customToolbar.findViewById(R.id.btnOpenClose);
-        btnOpenClose.setOnClickListener(this);
-
-    }
-
-    @Override
-    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-        for (DataSnapshot ds : dataSnapshot.getChildren()){
-
-            String brand = ds.child("brand").getValue().toString();
-
-            if (brand.equals(data)){
-                String model = ds.child("model").getValue().toString();
-                String id = ds.child("id").getValue().toString();
-                Double price = Double.valueOf(ds.child("price").getValue().toString());
-                Integer year = Integer.valueOf(ds.child("year").getValue().toString());
-
-                list.add(new Car(id,brand,model,price,year));
-            }
-        }
-
-        ArrayAdapter<Car> countryAdapter = new ArrayAdapter<Car>(this,android.R.layout.simple_list_item_1, list);
-        listView.setAdapter(countryAdapter);
-
-
-
-        listView.setOnItemClickListener(this);
-
 
         //Set the custom toolbar
         //1. To get the actual toolbar (we have to replace this predefined toolbar with our own)
@@ -105,11 +67,33 @@ public class Second extends AppCompatActivity implements ValueEventListener, Ada
         btnOpenClose = customToolbar.findViewById(R.id.btnOpenClose);
         btnOpenClose.setOnClickListener(this);
 
+        fillSideBar(brand,list);
+
     }
 
-    @Override
-    public void onCancelled(@NonNull DatabaseError databaseError) {
 
+    private void fillSideBar(String tempBrand,  ArrayList<Car> list){
+
+        System.out.println(list);
+
+        for (Car car : list){
+            System.out.println(tempBrand +  " + " + car.getBrand());
+
+            if (tempBrand.equals(car.getBrand())){
+                String model = car.getModel();
+                String id = car.getId();
+                Double price = car.getPrice();
+                Integer year = car.getYear();
+                String brand = car.getBrand();
+
+                modelList.add(new Car(brand,id,model,price,year));
+            }
+        }
+
+        ArrayAdapter<Car> countryAdapter = new ArrayAdapter<Car>(this,android.R.layout.simple_list_item_1, modelList);
+        listView.setAdapter(countryAdapter);
+
+        listView.setOnItemClickListener(this);
     }
 
 
@@ -118,7 +102,7 @@ public class Second extends AppCompatActivity implements ValueEventListener, Ada
 
         //save the data to send
         Bundle bundle = new Bundle();
-        bundle.putSerializable("car",list.get(position));
+        bundle.putSerializable("car", modelList.get(position));
 
         //steps of sending the data to the Fragment
 
@@ -135,14 +119,11 @@ public class Second extends AppCompatActivity implements ValueEventListener, Ada
         fragmentTransaction.commit();
 
         //4. Assign a title to the fragments
-        setTitle(list.get(position).getModel());
+        setTitle(modelList.get(position).getModel());
 
         //5. Close the drawer layout
 
         drawerLayout.closeDrawer(listView);
-
-
-
 
     }
 

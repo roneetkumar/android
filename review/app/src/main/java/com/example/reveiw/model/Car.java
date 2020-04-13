@@ -10,7 +10,7 @@ public class Car implements Serializable {
     private Double price;
     private Integer year;
 
-    public Car(String id, String brand, String model, Double price, Integer year) {
+    public Car(String brand, String id, String model, Double price, Integer year) {
         this.id = id;
         this.brand = brand;
         this.model = model;

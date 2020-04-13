@@ -1,18 +1,37 @@
 package com.example.reveiw;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Spinner;
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+import com.example.reveiw.model.Car;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 
-    String[] cars = { "Select Brand","Toyota", "Honda", "Ford", "Hyundai"};
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, ValueEventListener  {
+
+    // Write a message to the database
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference("Cars");
+
+    ArrayList<Car> list = new ArrayList<>();
+    ArrayAdapter<String> carArrayAdapter;
+    ArrayList<String> brandList = new ArrayList<>();
+
     Spinner spinner;
 
     @Override
@@ -20,13 +39,19 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        brandList.add("Select Brand");
+
+        myRef.addValueEventListener(this);
+
         spinner = findViewById(R.id.spinner);
+
         spinner.setOnItemSelectedListener(this);
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,cars);
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        carArrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item, brandList);
 
-        spinner.setAdapter(arrayAdapter);
+        carArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinner.setAdapter(carArrayAdapter);
     }
 
     @Override
@@ -38,13 +63,39 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         if(brand != "Select Brand"){
             Intent intent= new Intent(MainActivity.this, Second.class);
-            intent.putExtra("data", brand);
+            intent.putExtra("brand", brand);
+            intent.putExtra("list", (Serializable) list);
             startActivity(intent);
         }
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    @Override
+    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        for (DataSnapshot ds : dataSnapshot.getChildren()){
+
+    if (!ds.getKey().equals("Img")){
+            String brand = ds.child("brand").getValue().toString();
+            String model = ds.child("model").getValue().toString();
+            String id = ds.child("id").getValue().toString();
+            Double price = Double.valueOf(ds.child("price").getValue().toString());
+            Integer year = Integer.valueOf(ds.child("year").getValue().toString());
+
+            if(!brandList.contains(brand)){
+                  brandList.add(brand);
+            }
+
+            list.add(new Car(brand,id,model,price,year));
+        }
+        }
+    }
+
+    @Override
+    public void onCancelled(@NonNull DatabaseError databaseError) {
 
     }
 }
