@@ -32,7 +32,7 @@ public class Second extends AppCompatActivity implements AdapterView.OnItemClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
 
-        Bundle bundle=getIntent().getExtras();
+        Bundle bundle = getIntent().getExtras();
 
         String  brand = bundle.get("brand").toString();
 
@@ -75,10 +75,10 @@ public class Second extends AppCompatActivity implements AdapterView.OnItemClick
 
     private void fillSideBar(String tempBrand,  ArrayList<Car> list){
 
-        System.out.println(list);
+       // System.out.println(list);
 
         for (Car car : list){
-            System.out.println(tempBrand +  " + " + car.getBrand());
+           // System.out.println(tempBrand +  " + " + car.getBrand());
 
             if (tempBrand.equals(car.getBrand())){
                 String model = car.getModel();

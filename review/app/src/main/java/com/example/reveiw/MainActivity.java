@@ -4,12 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.example.reveiw.model.Car;
@@ -18,8 +19,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
+import java.io.InputStream;
 import java.io.Serializable;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, ValueEventListener  {
@@ -32,12 +36,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     ArrayAdapter<String> carArrayAdapter;
     ArrayList<String> brandList = new ArrayList<>();
 
+    ImageView imageView;
+
     Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        imageView = findViewById(R.id.imageView3);
+
+        Picasso.get().load("https://i.insider.com/5b7d8b5f959f34fd0a8b5381?width=1100&format=jpeg&auto=webp").into(imageView);
 
         brandList.add("Select Brand");
 
@@ -53,6 +63,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         spinner.setAdapter(carArrayAdapter);
     }
+
+
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -71,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
+
     @Override
     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
         for (DataSnapshot ds : dataSnapshot.getChildren()){
@@ -83,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 Integer year = Integer.valueOf(ds.child("year").getValue().toString());
 
                 if(!brandList.contains(brand)){
-                      brandList.add(brand);
+                    brandList.add(brand);
                 }
 
                 list.add(new Car(brand,id,model,price,year));

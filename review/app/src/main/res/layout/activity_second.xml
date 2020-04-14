@@ -14,8 +14,7 @@
         android:id="@+id/main_ui"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
-    </LinearLayout>
+        android:orientation="horizontal"/>
 
     <ListView
         android:layout_width="300dp"

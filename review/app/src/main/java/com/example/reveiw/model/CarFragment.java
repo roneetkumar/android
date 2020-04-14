@@ -29,10 +29,10 @@ public class CarFragment extends android.app.Fragment {
         Car car = (Car) getArguments().getSerializable("car");
 
         TextView id = getActivity().findViewById(R.id.id);
-        TextView brand = getActivity().findViewById(R.id.brand);;
-        TextView model = getActivity().findViewById(R.id.model);;
-        TextView price = getActivity().findViewById(R.id.price);;
-        TextView year = getActivity().findViewById(R.id.year);;
+        TextView brand = getActivity().findViewById(R.id.brand);
+        TextView model = getActivity().findViewById(R.id.model);
+        TextView price = getActivity().findViewById(R.id.price);
+        TextView year = getActivity().findViewById(R.id.year);
 
         id.setText(car.getId());
         brand.setText(car.getBrand());
