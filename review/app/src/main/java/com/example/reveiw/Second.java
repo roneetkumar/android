@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.example.reveiw.model.Car;
@@ -21,8 +22,7 @@ import java.util.ArrayList;
 
 public class Second extends AppCompatActivity implements AdapterView.OnItemClickListener, View.OnClickListener {
 
-    ImageButton btnOpenClose;
-    ImageButton back;
+    ImageView btnOpenClose;
     DrawerLayout drawerLayout;
     ListView listView;
     ArrayList<Car> modelList = new ArrayList<>();
