@@ -56,9 +56,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        // On selecting a spinner item
-        String item = parent.getItemAtPosition(position).toString();
-
         String brand = String.valueOf(spinner.getSelectedItem());
 
         if(brand != "Select Brand"){
@@ -78,19 +75,19 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
         for (DataSnapshot ds : dataSnapshot.getChildren()){
 
-    if (!ds.getKey().equals("Img")){
-            String brand = ds.child("brand").getValue().toString();
-            String model = ds.child("model").getValue().toString();
-            String id = ds.child("id").getValue().toString();
-            Double price = Double.valueOf(ds.child("price").getValue().toString());
-            Integer year = Integer.valueOf(ds.child("year").getValue().toString());
+            if (!ds.getKey().equals("Img")){
+                String brand = ds.child("brand").getValue().toString();
+                String model = ds.child("model").getValue().toString();
+                String id = ds.child("id").getValue().toString();
+                Double price = Double.valueOf(ds.child("price").getValue().toString());
+                Integer year = Integer.valueOf(ds.child("year").getValue().toString());
 
-            if(!brandList.contains(brand)){
-                  brandList.add(brand);
+                if(!brandList.contains(brand)){
+                      brandList.add(brand);
+                }
+
+                list.add(new Car(brand,id,model,price,year));
             }
-
-            list.add(new Car(brand,id,model,price,year));
-        }
         }
     }
 

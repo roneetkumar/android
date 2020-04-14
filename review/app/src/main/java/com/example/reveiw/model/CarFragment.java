@@ -42,6 +42,4 @@ public class CarFragment extends android.app.Fragment {
 
         Log.d(TAG, "onActivityCreated: " + id.getText());
     }
-
-
 }

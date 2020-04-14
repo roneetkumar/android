@@ -1,12 +1,12 @@
 package com.example.reveiw;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+
+import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,21 +16,13 @@ import android.widget.ListView;
 
 import com.example.reveiw.model.Car;
 import com.example.reveiw.model.CarFragment;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-
-
-
-
 
 public class Second extends AppCompatActivity implements AdapterView.OnItemClickListener, View.OnClickListener {
 
     ImageButton btnOpenClose;
+    ImageButton back;
     DrawerLayout drawerLayout;
     ListView listView;
     ArrayList<Car> modelList = new ArrayList<>();
@@ -49,7 +41,7 @@ public class Second extends AppCompatActivity implements AdapterView.OnItemClick
         listView = findViewById(R.id.listView);
         drawerLayout = findViewById(R.id.drawer);
 
-        //Set the custom toolbar
+    //Set the custom toolbar
         //1. To get the actual toolbar (we have to replace this predefined toolbar with our own)
         ActionBar mActionBar = getSupportActionBar();
         mActionBar.setDisplayShowTitleEnabled(false); //hide the title
@@ -59,18 +51,27 @@ public class Second extends AppCompatActivity implements AdapterView.OnItemClick
         LayoutInflater li = LayoutInflater.from(this);
         View customToolbar = li.inflate(R.layout.custom_toolbar, null);
 
+//        customToolbar.wi;
+
         //3. Attach the custom toolbar to our app
         mActionBar.setCustomView(customToolbar);
         mActionBar.setDisplayShowCustomEnabled(true);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); getSupportActionBar().setDisplayShowHomeEnabled(true);
+
 
         //Set Image button
         btnOpenClose = customToolbar.findViewById(R.id.btnOpenClose);
         btnOpenClose.setOnClickListener(this);
 
         fillSideBar(brand,list);
-
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 
     private void fillSideBar(String tempBrand,  ArrayList<Car> list){
 
@@ -122,7 +123,6 @@ public class Second extends AppCompatActivity implements AdapterView.OnItemClick
         setTitle(modelList.get(position).getModel());
 
         //5. Close the drawer layout
-
         drawerLayout.closeDrawer(listView);
 
     }
