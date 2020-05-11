@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.example.reveiw.R;
 import com.example.reveiw.model.Car;
 import com.example.reveiw.model.CarFragment;
 

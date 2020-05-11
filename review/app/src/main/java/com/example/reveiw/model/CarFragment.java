@@ -10,11 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.example.reveiw.R;
-
-import static androidx.constraintlayout.widget.Constraints.TAG;
-
 public class CarFragment extends android.app.Fragment {
-
 
     @Nullable
     @Override
@@ -39,7 +35,5 @@ public class CarFragment extends android.app.Fragment {
         model.setText(car.getModel());
         price.setText(car.getPrice().toString());
         year.setText(car.getYear().toString());
-
-        Log.d(TAG, "onActivityCreated: " + id.getText());
     }
 }
