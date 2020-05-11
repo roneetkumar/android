@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">एप्लिकेशन - 1</string>
+    <string name="lasalle_college">लसल कॉलेज</string>
+    <string name="name">नाम :</string>
+    <string name="finish">समाप्त</string>
+    <string name="show">बयान</string>
+    <string name="nameString">मेरा नाम है</string>
+</resources>
